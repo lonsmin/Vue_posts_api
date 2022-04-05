@@ -1,7 +1,7 @@
 <template>
     <header>
         <h1>{{title}}</h1>
-        <Button color="green" />
+        <Button color="green" text="Add"/>
     </header>
 </template>
 <script>
@@ -11,7 +11,7 @@ export default {
     props:{
         title:{
             type: String,
-            default: 'Posts',
+            default: 'Todo',
         }
     },
     components:{
