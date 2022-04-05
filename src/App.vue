@@ -1,20 +1,51 @@
 <template>
 <div class="container">
   <Header />
+  <Tasks :tasks="tasks"/>
 </div> 
 </template>
 
 <script>
 import Header from './components/Header.vue'
+import Tasks from './components/Tasks.vue'
 
 export default {
   name: 'App',
   components: {
     Header,
+    Tasks,
   },
-  
+  methods:{
+    async getTasks(){
+      let start = 10;
+      let limit = 10;
+      const res = await fetch('https://jsonplaceholder.typicode.com/todos?_start='+start+'&_limit='+limit)
+      const data = await res.json();
+
+      return data
+    }
+  },
+  data() {
+    return {
+      tasks: []
+    }
+  },
+  async created() {
+    this.tasks = await this.getTasks()
+    
+    // [
+    //   {
+    //     id:1,
+    //     title:'Nadpis',
+    //     text:'Text'
+    //   }
+      
+    // ]
+  }
 }
 </script>
+
+
 
 <style>
 * {
