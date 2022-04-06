@@ -18,7 +18,8 @@ export default {
         },
         color:{
             type:String,            
-        }
+        },
+       
     },
     methods:{
         loadPost(){
@@ -27,3 +28,4 @@ export default {
     }
 }
 </script>
+
