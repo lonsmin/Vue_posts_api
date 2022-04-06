@@ -1,7 +1,8 @@
 <template>
 <div class="container">
   <Header />
-  <Tasks :tasks="tasks" />
+  <AddTask @add-task="addTask($event)"/>
+  <Tasks :tasks="tasks" @delTask="delTask($event)" />
   <Button color="brown" text="More items..." @click="moreItems()"/>
 </div> 
 </template>
@@ -10,32 +11,72 @@
 import Header from './components/Header.vue'
 import Tasks from './components/Tasks.vue'
 import Button from './components/subcomponents/Button.vue'
-
+import AddTask from './components/AddTask.vue'
 export default {
   name: 'App',
   components: {
     Header,
     Tasks,
     Button,
+    AddTask,
   },
   methods:{
-    async getTasks(){
-
-      const res = await fetch('https://jsonplaceholder.typicode.com/todos?_page='+this.params.pageNumber+'&_limit='+this.params.limitNumber)
+    async getTasks(){ 
+      try{   
+      const res = await fetch(
+        this.params.api+
+        this.params.page+
+        this.params.pageNumber+
+        this.params.limit+
+        this.params.limitNumber)
       const data = await res.json();
-      return data
+      return data    
+      }
+      catch{
+        console.log('error')
+      }
     },
     async moreItems(){
       this.params.pageNumber = this.params.pageNumber + 1;
       this.tasks = this.tasks.concat(await this.getTasks())
+    },
+    async addTask(task){
+    const res = await fetch(this.params.api,{
+                method:'POST',
+                headers:{
+                    'Accept':'application/json, text/plain, */*',
+                    'Content-type':'application/json'
+                },
+                body:JSON.stringify(
+                  task
+                  )
+            })
+    const data = await res.json(); 
+    
+    this.tasks = [data].concat(this.tasks) 
+    },
+    async delTask(id){
+    const res = await fetch(this.params.api+'/'+id,{
+      method:'DELETE'
+    })
+    
+    this.tasks = this.tasks.filter((task)=>{
+      return task.id !== id;
+    })
+
     }
   },
   computed: {
     
   },
+  
   data() {
     return {
+
       params:{
+        api: 'https://jsonplaceholder.typicode.com/todos',
+        page: '?_page=',
+        limit: '&_limit=',
         pageNumber: 1,
         limitNumber:5,
       },
@@ -67,7 +108,7 @@ body {
   margin: 30px auto;
   overflow: auto;
   min-height: 300px;
-  border: 1px solid steelblue;
+  border: 1px solid #34495e;
   padding: 30px;
   border-radius: 5px;
 }
@@ -78,7 +119,7 @@ body {
   color: #fff;
   border: none;
   padding: 10px 20px;
-  margin: 5px;
+  margin:5px 0;
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none;
