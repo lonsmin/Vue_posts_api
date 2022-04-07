@@ -21,11 +21,6 @@ export default {
         },
        
     },
-    methods:{
-        loadPost(){
-            console.log('loading...')
-        }
-    }
 }
 </script>
 

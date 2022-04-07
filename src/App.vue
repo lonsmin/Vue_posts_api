@@ -66,10 +66,6 @@ export default {
 
     }
   },
-  computed: {
-    
-  },
-  
   data() {
     return {
 
@@ -78,7 +74,7 @@ export default {
         page: '?_page=',
         limit: '&_limit=',
         pageNumber: 1,
-        limitNumber:5,
+        limitNumber:3,
       },
       tasks: []
     }
