@@ -1,8 +1,6 @@
 <template>
     <button class="btn"
-    :style="{background: color}"
-    @click="loadPost()"
-    >
+    :style="{background: color}">
     {{text}}
     </button>
 </template>
